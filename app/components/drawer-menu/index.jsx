@@ -40,7 +40,8 @@ import {
     useMultiStyleConfig,
     // Alexis custom
     Icon,
-    Stack
+    Stack,
+    Highlight
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 import {AuthHelpers, useAuthHelper, useCustomerType} from '@salesforce/commerce-sdk-react'
 import Link from '@salesforce/retail-react-app/app/components/link'
@@ -72,6 +73,7 @@ import dayjs from 'dayjs'
 const FONT_SIZES = ['lg', 'md', 'md']
 const FONT_WEIGHTS = ['semibold', 'semibold', 'regular']
 const PHONE_DRAWER_SIZE = 'xs'
+// Alexis custom - smaller drawer size
 //const TABLET_DRAWER_SIZE = 'lg'
 const TABLET_DRAWER_SIZE = 'sm'
 
@@ -128,7 +130,7 @@ const DrawerMenu = ({root, isOpen, onClose = noop, onLogoClick = noop}) => {
             <DrawerOverlay>
                 <DrawerContent>
                     {/* Header Content */}
-                    <DrawerHeader py={2}>
+                    <DrawerHeader pt={2} pb={3}>
                         <Stack direction="row">
                             {/* Alexis custom - hide store logo */}
                             {/* <IconButton
@@ -141,14 +143,25 @@ const DrawerMenu = ({root, isOpen, onClose = noop, onLogoClick = noop}) => {
                                 {reservedSlot ? (
                                     <>
                                         <Text fontSize="md">Reserved Timeslot:</Text>
-                                        <Text fontSize="sm">
+                                        <Text fontSize="sm" fontWeight="300">
                                             {dayjs(reservedSlot.startDateTime).format('ddd D MMM')},{' '}
                                             {dayjs(reservedSlot.startDateTime).format('H:mm')} to{' '}
                                             {dayjs(reservedSlot.endDateTime).format('H:mm')}
                                         </Text>
-                                        <Text fontSize="sm">
-                                            Expires in{' '}
-                                            {dayjs(reservedSlot.reservationExpiry).format('HH:mm')}
+                                        <Text fontSize="sm" fontWeight="300">
+                                            {'Expires at '}
+                                            <span
+                                                style={{
+                                                    padding: '2px 5px',
+                                                    borderRadius: '10px',
+                                                    background: '#D8E6FE',
+                                                    fontWeight: '500'
+                                                }}
+                                            >
+                                                {dayjs(reservedSlot.reservationExpiry).format(
+                                                    'HH:mm'
+                                                )}
+                                            </span>
                                         </Text>
                                     </>
                                 ) : (

@@ -48,11 +48,12 @@ const PageNotFound = loadable(() => import('./pages/page-not-found'))
 // Alexis custom grocery - store locator
 const StoreLocator = loadable(() => import('./pages/store-locator'), {fallback})
 const StoreLocatorDetails = loadable(() => import('./pages/store-locator-details'), {fallback})
+const HomeGrocery = loadable(() => import('./pages/home-grocery'), {fallback})
 
 export const routes = [
     {
         path: '/',
-        component: Home,
+        component: HomeGrocery,
         exact: true
     },
     {

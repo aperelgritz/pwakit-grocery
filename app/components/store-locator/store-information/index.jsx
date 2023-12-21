@@ -11,7 +11,10 @@ import {
     ListItem,
     Img,
     Button,
-    HStack
+    HStack,
+    // Alexis custom
+    Spinner,
+    VStack
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 
 // Alexis custom
@@ -54,6 +57,7 @@ const StoreInformationComponent = (props) => {
 
     // Alexis custom - track stores in state to update with slots
     const [stores, setStores] = useState(props.stores)
+    const [isSlotLoading, setIsSlotLoading] = useState(false)
 
     // Alexis custom - select store for inventory
     const {
@@ -127,6 +131,7 @@ const StoreInformationComponent = (props) => {
 
     // Alexis custom - fetch and update state
     const fetchSlotsAndUpdateState = useCallback(async () => {
+        setIsSlotLoading(true)
         let storesWithNextSlot = []
 
         for (const store of props.stores) {
@@ -146,6 +151,7 @@ const StoreInformationComponent = (props) => {
         }
 
         setStores(storesWithNextSlot)
+        setIsSlotLoading(false)
     }, [])
 
     // Alexis custom
@@ -259,8 +265,17 @@ const StoreInformationComponent = (props) => {
     }
 
     const availableSlotBlock = (store) => {
+        if (isSlotLoading) {
+            return (
+                <HStack gap="0.1em 0.5em" fontSize={'14px'} fontWeight={'400'}>
+                    <SlClock />
+                    <Spinner size="xs" color="gray.400" />
+                </HStack>
+            )
+        }
+
         // Slot available & no slot already reserved
-        if (store.nextSlot && !reservedSlot) {
+        if (!isSlotLoading && store.nextSlot && !reservedSlot) {
             const now = new Date()
             const startDateTime = new Date(store.nextSlot.startDateTime)
             const endDateTime = new Date(store.nextSlot.endDateTime)
@@ -289,7 +304,7 @@ const StoreInformationComponent = (props) => {
         }
 
         // Slot available & another slot already reserved
-        if (store.nextSlot && reservedSlot) {
+        if (!isSlotLoading && store.nextSlot && reservedSlot) {
             const startDateTime = new Date(store.nextSlot.startDateTime)
             const endDateTime = new Date(store.nextSlot.endDateTime)
 
@@ -318,7 +333,7 @@ const StoreInformationComponent = (props) => {
         }
 
         // No slot available
-        if (!store.nextSlot) {
+        if (!isSlotLoading && !store.nextSlot) {
             return (
                 <HStack gap="0.5em" fontSize={'14px'} fontWeight={'400'}>
                     <SlClock />
@@ -397,7 +412,9 @@ const StoreInformationComponent = (props) => {
                                         width="100%"
                                     />
                                 )}
-                                <Box
+                                <VStack
+                                    align="flex-start"
+                                    spacing="0.1em"
                                     paddingLeft={'25px'}
                                     paddingRight={'25px'}
                                     paddingTop={'10px'}
@@ -471,7 +488,7 @@ const StoreInformationComponent = (props) => {
                                         value={store.id}
                                         type="hidden"
                                     />
-                                </Box>
+                                </VStack>
                             </Box>
                         </Box>
                     </ListItem>
