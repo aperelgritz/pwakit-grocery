@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {useLocation} from 'react-router-dom'
 
@@ -19,16 +19,22 @@ import {
     Text,
     Flex,
     Stack,
-    Container
+    Container,
+    Image
     //Link
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 import Link from '@salesforce/retail-react-app/app/components/link'
+import {SkeletonCircle} from '@chakra-ui/react'
 
 // Project Components
 import Hero from '@salesforce/retail-react-app/app/components/hero'
 import Seo from '@salesforce/retail-react-app/app/components/seo'
 import Section from '@salesforce/retail-react-app/app/components/section'
 import ProductScroller from '@salesforce/retail-react-app/app/components/product-scroller'
+// Alexis custom
+import Carousel from '../../components/carousel/index'
+import ContentCard from '../../components/content-card/index'
+import ContentCards from '../../components/content-cards/index'
 
 // Others
 import {getAssetUrl} from '@salesforce/pwa-kit-react-sdk/ssr/universal/utils'
@@ -65,10 +71,12 @@ const HomeGrocery = () => {
         res.set('Cache-Control', `max-age=${MAX_CACHE_AGE}`)
     }
 
+    // ALexis custom - get products on promo
     const {data: productSearchResult, isLoading} = useProductSearch({
         parameters: {
-            refine: [`cgid=${HOME_SHOP_PRODUCTS_CATEGORY_ID}`, 'htype=master'],
-            limit: HOME_SHOP_PRODUCTS_LIMIT
+            // refine: ['pmid%3D50pct-off-2nd', 'htype=product'],
+            refine: ['htype=product'],
+            limit: 10
         }
     })
 
@@ -85,6 +93,44 @@ const HomeGrocery = () => {
         parameters: {id: CAT_MENU_DEFAULT_ROOT_CATEGORY, levels: CAT_MENU_DEFAULT_NAV_SSR_DEPTH}
     })
 
+    // Alexis custom
+    const [imgLoaded, setImgLoaded] = useState(false)
+
+    // Alexis custom - carousel
+    const slides = [
+        {
+            img: getAssetUrl('static/img/rectangle-open-bright-grocery-store-1-min.jpg'),
+            label: 'Come Visit!',
+            description: 'We are always happy to welcome you to our stores'
+        },
+        {
+            img: getAssetUrl(
+                'static/img/top-view-healthy-food-immunity-boosting-composition-min.jpg'
+            ),
+            label: 'Our Selection',
+            description: 'Only the freshest fruits and vegetables'
+        }
+    ]
+
+    // Alexis custom - content cards
+    const cards = [
+        {
+            img: getAssetUrl('static/img/rectangle-healthy-snacks.jpg'),
+            label: 'Fruits & Vegetables',
+            description: 'Stock up on healthy snacks'
+        },
+        {
+            img: getAssetUrl('static/img/rectangle-pantry-staples.webp'),
+            label: 'Pantry Staples',
+            description: 'Everyday needs for your cupboard'
+        },
+        {
+            img: getAssetUrl('static/img/rectangle-dishwashing-supplies.jpg'),
+            label: 'Make it shine',
+            description: 'All your household cleaning essentials'
+        }
+    ]
+
     return (
         <Box data-testid="home-page" layerStyle="page">
             <Seo
@@ -92,6 +138,7 @@ const HomeGrocery = () => {
                 description="Commerce Cloud Retail React App"
                 keywords="Commerce Cloud, Retail React App, React Storefront"
             />
+            <Carousel slides={slides} />
 
             <Section
                 padding={4}
@@ -114,35 +161,19 @@ const HomeGrocery = () => {
                                 alignItems="center"
                                 mx="auto"
                             >
-                                {cat.image ? (
-                                    <Box
+                                <SkeletonCircle size={20} isLoaded={imgLoaded}>
+                                    <Image
                                         h={20}
                                         w={20}
                                         borderRadius="100px"
                                         shadow="md"
-                                        bgSize="cover"
-                                        bgPos="center"
-                                        style={{
-                                            backgroundImage: `url(${cat.image})`
-                                        }}
-                                    ></Box>
-                                ) : (
-                                    <Box
-                                        h={20}
-                                        w={20}
-                                        borderRadius="100px"
-                                        shadow="md"
-                                        bgSize="cover"
-                                        bgPos="center"
-                                        style={{
-                                            backgroundImage: `url(${getAssetUrl(
-                                                'static/img/logo-small.svg'
-                                            )})`
-                                        }}
-                                    ></Box>
-                                )}
-                                <Box w={40} bg="white" mt={1} rounded="lg" overflow="hidden">
-                                    <Text py={1} textAlign="center" color="gray.800">
+                                        src={cat.image}
+                                        fallbackSrc={getAssetUrl('static/img/logo-small.svg')}
+                                        onLoad={() => setImgLoaded(true)}
+                                    />
+                                </SkeletonCircle>
+                                <Box w={'8rem'} bg="white" mt={1} rounded="lg" overflow="hidden">
+                                    <Text p={1} textAlign="center" color="gray.800">
                                         {cat.name}
                                     </Text>
                                 </Box>
@@ -151,6 +182,24 @@ const HomeGrocery = () => {
                     ))}
                 </HStack>
             </Section>
+
+            <ContentCards title="Get the Best Deals" cards={cards} />
+
+            {productSearchResult && (
+                <Section
+                    padding={4}
+                    paddingTop={16}
+                    title="Shop Products"
+                    subtitle="Only the Best Deals"
+                >
+                    <Stack pt={8} spacing={16}>
+                        <ProductScroller
+                            products={productSearchResult?.hits}
+                            isLoading={isLoading}
+                        />
+                    </Stack>
+                </Section>
+            )}
         </Box>
     )
 }

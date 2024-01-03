@@ -431,7 +431,7 @@ const DrawerMenu = ({root, isOpen, onClose = noop, onLogoClick = noop}) => {
 
                     {/* Alexis custom grocery - wrapped DrawerFooter into HideOnDesktop */}
                     <HideOnDesktop>
-                        <DrawerFooter>
+                        <DrawerFooter py={2}>
                             <SocialIcons variant={socialIconVariant} />
                         </DrawerFooter>
                     </HideOnDesktop>

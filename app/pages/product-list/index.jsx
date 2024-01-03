@@ -44,7 +44,8 @@ import {
     DrawerContent,
     DrawerCloseButton,
     // Alexis custom grocery
-    Image
+    Image,
+    Skeleton as ChakraSkeleton
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 
 // Project Components
@@ -89,6 +90,7 @@ import useNavigation from '@salesforce/retail-react-app/app/hooks/use-navigation
 import LoadingSpinner from '@salesforce/retail-react-app/app/components/loading-spinner'
 import {useWishList} from '@salesforce/retail-react-app/app/hooks/use-wish-list'
 import {isHydrated} from '@salesforce/retail-react-app/app/utils/utils'
+import {getAssetUrl} from '@salesforce/pwa-kit-react-sdk/ssr/universal/utils'
 
 // NOTE: You can ignore certain refinements on a template level by updating the below
 // list of ignored refinements.
@@ -120,6 +122,9 @@ const ProductList = (props) => {
     const [filtersLoading, setFiltersLoading] = useState(false)
     const [wishlistLoading, setWishlistLoading] = useState([])
     const [sortOpen, setSortOpen] = useState(false)
+
+    // Alexis custom - skeleton/placeholder for banner image
+    const [bannerImgLoaded, setBannerImgLoaded] = useState(false)
 
     const urlParams = new URLSearchParams(location.search)
     let searchQuery = urlParams.get('q')
@@ -388,16 +393,27 @@ const ProductList = (props) => {
                     {/* Header */}
                     {/* Alexis custom grocery - added Image */}
                     {category?.c_slotBannerImage && (
-                        <Image
-                            src={category.c_slotBannerImage.replace(
-                                /https:\/\/.+?\//,
-                                'https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/ZZSE_216/'
-                            )}
-                            fit={'cover'}
-                            align={'center'}
-                            width={'100%'}
-                            height={'150px'}
-                        />
+                        <>
+                            <ChakraSkeleton
+                                width={'100%'}
+                                height={'150px'}
+                                isLoaded={bannerImgLoaded}
+                            >
+                                <Image
+                                    src={category.c_slotBannerImage.replace(
+                                        /https:\/\/.+?\//,
+                                        'https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/ZZSE_216/'
+                                    )}
+                                    fit={'cover'}
+                                    align={'center'}
+                                    width={'100%'}
+                                    height={'150px'}
+                                    // fallback={<ChakraSkeleton width="100%" height="150px" />}
+                                    // fallbackSrc={getAssetUrl('/static/img/placeholder.png')}
+                                    onLoad={() => setBannerImgLoaded(true)}
+                                />
+                            </ChakraSkeleton>
+                        </>
                     )}
                     <Stack
                         display={{base: 'none', lg: 'flex'}}

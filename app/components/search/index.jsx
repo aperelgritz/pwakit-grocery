@@ -61,7 +61,9 @@ const formatSuggestions = (searchSuggestions, input) => {
                 price: product.price,
                 productId: product.productId,
                 name: boldString(product.productName, capitalize(input)),
-                link: productUrlBuilder({id: product.productId})
+                link: productUrlBuilder({id: product.productId}),
+                // Alexis custom
+                image: product.c_extend.image
             }
         }),
         phraseSuggestions: searchSuggestions?.categorySuggestions?.suggestedPhrases?.map(
@@ -110,10 +112,19 @@ const Search = (props) => {
         shouldOpenPopover()
     }, [searchQuery, searchSuggestion.data])
 
+    // Alexis custom - expanded criteria for searchSuggestionsAvailable
+    /*
     const searchSuggestionsAvailable =
         searchSuggestions &&
         (searchSuggestions?.categorySuggestions?.length ||
             searchSuggestions?.phraseSuggestions?.length)
+    */
+    const searchSuggestionsAvailable =
+        searchSuggestions &&
+        (searchSuggestions?.categorySuggestions?.length ||
+            searchSuggestions?.phraseSuggestions?.length ||
+            searchSuggestions?.productSuggestions?.length ||
+            searchSuggestions?.contentSuggestions?.length)
 
     const saveRecentSearch = (searchText) => {
         // Get recent searches or an empty array if undefined.
@@ -194,8 +205,10 @@ const Search = (props) => {
     }
 
     return (
-        <Box>
-            <Popover isOpen={isOpen} isLazy initialFocusRef={searchInputRef}>
+        <Box width="100%">
+            {/* <Popover isOpen={isOpen} isLazy initialFocusRef={searchInputRef}> */}
+            {/* Alexis custom - added matchWidth="true" */}
+            <Popover matchWidth="true" isOpen="true" isLazy initialFocusRef={searchInputRef}>
                 <PopoverTrigger>
                     <form onSubmit={onSubmitSearch}>
                         <HStack>
@@ -233,7 +246,8 @@ const Search = (props) => {
                 </PopoverTrigger>
 
                 <HideOnMobile>
-                    <PopoverContent data-testid="sf-suggestion-popover">
+                    {/* Alexis custom - added width="auto", otherwise defaults to "xs" */}
+                    <PopoverContent width="auto" data-testid="sf-suggestion-popover">
                         <SearchSuggestions
                             closeAndNavigate={closeAndNavigate}
                             recentSearches={recentSearches}

@@ -14,7 +14,8 @@ import {
     HStack,
     // Alexis custom
     Spinner,
-    VStack
+    VStack,
+    Skeleton
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 
 // Alexis custom
@@ -137,12 +138,19 @@ const StoreInformationComponent = (props) => {
         for (const store of props.stores) {
             if (store.c_facilityId) {
                 const slots = await timeslotMgrSearchFirstSlots(store.c_facilityId)
-                storesWithNextSlot.push({
-                    ...store,
-                    nextSlot: {
-                        ...slots[0] // keep only the first available slot
-                    }
-                })
+
+                if (slots.length > 0) {
+                    storesWithNextSlot.push({
+                        ...store,
+                        nextSlot: {
+                            ...slots[0] // keep only the first available slot
+                        }
+                    })
+                } else {
+                    storesWithNextSlot.push({
+                        ...store
+                    })
+                }
             } else {
                 storesWithNextSlot.push({
                     ...store
@@ -394,17 +402,28 @@ const StoreInformationComponent = (props) => {
                                     ))}
                                 {/* Alexis custom end */}
                                 {store.image ? (
-                                    <Img
-                                        alt="test"
-                                        //src={getAssetUrl('static/img/banner.png')}
-                                        src={store.image.replace(
+                                    <Box
+                                        margin="auto"
+                                        width="100%"
+                                        height="113px"
+                                        backgroundImage={store.image.replace(
                                             /https:\/\/.+?\//,
                                             'https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/ZZSE_216/'
                                         )}
-                                        margin="auto"
-                                        width="100%"
-                                    />
+                                        backgroundColor="gray"
+                                    ></Box>
                                 ) : (
+                                    // <Img
+                                    //     alt="test"
+                                    //     //src={getAssetUrl('static/img/banner.png')}
+                                    //     src={store.image.replace(
+                                    //         /https:\/\/.+?\//,
+                                    //         'https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/ZZSE_216/'
+                                    //     )}
+                                    //     margin="auto"
+                                    //     width="100%"
+                                    //     fallback={<Skeleton width="100%" />}
+                                    // />
                                     <Img
                                         alt="test"
                                         src={getAssetUrl('static/img/store-default.jpg')}
