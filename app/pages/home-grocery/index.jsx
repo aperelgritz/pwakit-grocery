@@ -74,8 +74,8 @@ const HomeGrocery = () => {
     // ALexis custom - get products on promo
     const {data: productSearchResult, isLoading} = useProductSearch({
         parameters: {
-            // refine: ['pmid%3D50pct-off-2nd', 'htype=product'],
-            refine: ['htype=product'],
+            refine: ['cgid=root', 'pmid=50pct-off-2nd|berries-3-for-2', 'htype=product'],
+            // refine: ['htype=product'],
             limit: 10
         }
     })
@@ -117,17 +117,20 @@ const HomeGrocery = () => {
         {
             img: getAssetUrl('static/img/rectangle-healthy-snacks.jpg'),
             label: 'Fruits & Vegetables',
-            description: 'Stock up on healthy snacks'
+            description: 'Stock up on healthy snacks',
+            catRelPath: '/category/fresh'
         },
         {
             img: getAssetUrl('static/img/rectangle-pantry-staples.webp'),
             label: 'Pantry Staples',
-            description: 'Everyday needs for your cupboard'
+            description: 'Everyday needs for your cupboard',
+            catRelPath: '/category/pantry'
         },
         {
             img: getAssetUrl('static/img/rectangle-dishwashing-supplies.jpg'),
             label: 'Make it shine',
-            description: 'All your household cleaning essentials'
+            description: 'All your household cleaning essentials',
+            catRelPath: '/category/household'
         }
     ]
 
@@ -190,7 +193,7 @@ const HomeGrocery = () => {
                     padding={4}
                     paddingTop={16}
                     title="Shop Products"
-                    subtitle="Only the Best Deals"
+                    subtitle="All you Essentials"
                 >
                     <Stack pt={8} spacing={16}>
                         <ProductScroller

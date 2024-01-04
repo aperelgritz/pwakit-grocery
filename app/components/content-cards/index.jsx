@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {Link as RouterLink} from 'react-router-dom'
 
-import {Box, Flex, Image, Link, Text} from '@salesforce/retail-react-app/app/components/shared/ui'
+import {Box, Flex, Image, Text} from '@salesforce/retail-react-app/app/components/shared/ui'
 
 import Section from '@salesforce/retail-react-app/app/components/section'
 
@@ -25,31 +26,38 @@ const ContentCards = ({title, cards}) => {
                 style={{marginTop: '20px'}}
             >
                 {cards.map((card) => (
-                    <Box
-                        key={hashCode(card.label)}
-                        minWidth="320px"
-                        bg="white"
-                        shadow="lg"
-                        rounded="lg"
-                        overflow="hidden"
-                    >
-                        <Image
-                            w="full"
-                            h={56}
-                            fit="cover"
-                            src={getAssetUrl(card.img)}
-                            alt="avatar"
-                        />
+                    <RouterLink to={card.catRelPath}>
+                        <Box
+                            key={hashCode(card.label)}
+                            minWidth="320px"
+                            bg="white"
+                            shadow="lg"
+                            rounded="lg"
+                            overflow="hidden"
+                        >
+                            <Image
+                                w="full"
+                                h={56}
+                                fit="cover"
+                                src={getAssetUrl(card.img)}
+                                alt="avatar"
+                            />
 
-                        <Box py={5} textAlign="center">
-                            <Link display="block" fontSize="2xl" color="gray.800" fontWeight="bold">
-                                {card.label}
-                            </Link>
-                            <Text as="span" fontSize="sm" color="gray.700">
-                                {card.description}
-                            </Text>
+                            <Box py={5} textAlign="center">
+                                <Text
+                                    display="block"
+                                    fontSize="2xl"
+                                    color="gray.800"
+                                    fontWeight="bold"
+                                >
+                                    {card.label}
+                                </Text>
+                                <Text as="span" fontSize="sm" color="gray.700">
+                                    {card.description}
+                                </Text>
+                            </Box>
                         </Box>
-                    </Box>
+                    </RouterLink>
                 ))}
             </Flex>
         </Section>
@@ -64,7 +72,8 @@ ContentCards.propTypes = {
         PropTypes.shape({
             img: PropTypes.string,
             label: PropTypes.string,
-            description: PropTypes.string
+            description: PropTypes.string,
+            catRelPath: PropTypes.string
         })
     ).isRequired
 }

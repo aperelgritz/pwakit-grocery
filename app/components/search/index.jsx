@@ -208,7 +208,7 @@ const Search = (props) => {
         <Box width="100%">
             {/* <Popover isOpen={isOpen} isLazy initialFocusRef={searchInputRef}> */}
             {/* Alexis custom - added matchWidth="true" */}
-            <Popover matchWidth="true" isOpen="true" isLazy initialFocusRef={searchInputRef}>
+            <Popover matchWidth="true" isOpen={isOpen} isLazy initialFocusRef={searchInputRef}>
                 <PopoverTrigger>
                     <form onSubmit={onSubmitSearch}>
                         <HStack>

@@ -29,7 +29,14 @@ const ProductScroller = forwardRef(
             products,
             isLoading,
             scrollProps,
-            itemWidth = {base: '70%', md: '40%', lg: 'calc(33.33% - 10px)'},
+            // Alexis custom grocery
+            // itemWidth = {base: '70%', md: '40%', lg: 'calc(20% - 10px)'},
+            itemWidth = {
+                base: '50%',
+                md: 'calc(33.33% - 5px)',
+                lg: 'calc(25% - 10px)',
+                xl: 'calc(20% - 10px)'
+            },
             productTileProps,
             ...props
         },

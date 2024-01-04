@@ -262,6 +262,11 @@ const Header = ({
                             aria-label={intl.formatMessage({
                                 defaultMessage: 'Promotions'
                             })}
+                            onClick={() =>
+                                navigate(
+                                    '/search?refine=pmid%3D50pct-off-2nd%7Cberries-3-for-2%7Cicecream-20-percent-off'
+                                )
+                            }
                             icon={
                                 <>
                                     <TbDiscount2 fontSize="28px" />

@@ -17,6 +17,7 @@ import {
 // Alexis custom grocery
 import {PiPlant} from 'react-icons/pi'
 import {TbMeatOff} from 'react-icons/tb'
+import {MdOutlineDiscount} from 'react-icons/md'
 
 // Components
 import {
@@ -46,6 +47,8 @@ import {productUrlBuilder} from '@salesforce/retail-react-app/app/utils/url'
 import Link from '@salesforce/retail-react-app/app/components/link'
 import withRegistration from '@salesforce/retail-react-app/app/components/with-registration'
 import {useCurrency} from '@salesforce/retail-react-app/app/hooks'
+// Alexis custom grocery
+import useNavigation from '@salesforce/retail-react-app/app/hooks/use-navigation'
 
 // Alexis custom grocery - add to basket
 import {useCurrentBasket} from '@salesforce/retail-react-app/app/hooks/use-current-basket'
@@ -124,6 +127,9 @@ const ProductTile = (props) => {
     const [qtyInBasket, setQtyInBasket] = useState(0)
     const [itemIdInBasket, setItemIdInBasket] = useState('')
     const [isBasketLoading, setIsBasketLoading] = useState(false)
+
+    // Alexis custom
+    const navigate = useNavigation()
 
     useEffect(() => {
         const productInBasket = basket?.productItems?.find(
@@ -444,31 +450,46 @@ const ProductTile = (props) => {
                     {cartButtonBlock()}
                 </HStack>
 
-                {/* Alexis custom - First Product & Order Promo Callouts */}
-                <VStack align="start">
-                    {productPromo ? (
-                        <Badge
-                            fontSize="0.85em"
-                            colorScheme="green"
-                            variant="solid"
-                            borderRadius="sm"
-                        >
-                            {productPromo.promoDetails.callOut}
-                        </Badge>
-                    ) : (
-                        <Badge visibility="hidden" fontSize="0.85em">
-                            Placeholder
-                        </Badge>
+                {/* Alexis custom - Product & Order Promo Callouts (only the 1st of each) */}
+                <VStack align="start" minHeight={6} spacing={1}>
+                    {productPromo && (
+                        <Stack direction="row" maxWidth="100%">
+                            <Button
+                                leftIcon={<MdOutlineDiscount />}
+                                size="xs"
+                                colorScheme="green"
+                                variant="solid"
+                                fontSize="sm"
+                                fontWeight="regular"
+                                justifyContent="flex-start"
+                                onClick={() =>
+                                    navigate(
+                                        `/search?refine=pmid%3D${productPromo.promoDetails.id}`
+                                    )
+                                }
+                            >
+                                <Text textOverflow="ellipsis" overflow="hidden">
+                                    {productPromo.promoDetails.callOut}
+                                </Text>
+                            </Button>
+                        </Stack>
                     )}
                     {orderPromo && (
-                        <Badge
-                            fontSize="0.85em"
-                            colorScheme="cyan"
-                            variant="solid"
-                            borderRadius="sm"
-                        >
-                            {orderPromo.promoDetails.callOut}
-                        </Badge>
+                        <Stack direction="row" spacing={4} maxWidth="100%">
+                            <Button
+                                leftIcon={<MdOutlineDiscount />}
+                                size="xs"
+                                colorScheme="cyan"
+                                variant="solid"
+                                fontSize="sm"
+                                fontWeight="regular"
+                                justifyContent="flex-start"
+                            >
+                                <Text textOverflow="ellipsis" overflow="hidden">
+                                    {orderPromo.promoDetails.callOut}
+                                </Text>
+                            </Button>
+                        </Stack>
                     )}
                 </VStack>
 
