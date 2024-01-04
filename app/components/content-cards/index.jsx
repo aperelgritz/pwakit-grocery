@@ -35,13 +35,7 @@ const ContentCards = ({title, cards}) => {
                             rounded="lg"
                             overflow="hidden"
                         >
-                            <Image
-                                w="full"
-                                h={56}
-                                fit="cover"
-                                src={getAssetUrl(card.img)}
-                                alt="avatar"
-                            />
+                            <Image w="full" h={56} fit="cover" src={card.img} alt="avatar" />
 
                             <Box py={5} textAlign="center">
                                 <Text

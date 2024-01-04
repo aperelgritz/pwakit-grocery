@@ -5,6 +5,9 @@
   "68x5L8": {
     "defaultMessage": "Stores"
   },
+  "B/orA3": {
+    "defaultMessage": "Promotions"
+  },
   "TCZ75v": {
     "defaultMessage": "My Store"
   },
@@ -1087,6 +1090,18 @@
   "search.action.cancel": {
     "defaultMessage": "Cancel"
   },
+  "search_suggestions.label.categories": {
+    "defaultMessage": "Categories"
+  },
+  "search_suggestions.label.content": {
+    "defaultMessage": "Content"
+  },
+  "search_suggestions.label.did-you-mean": {
+    "defaultMessage": "Did you mean"
+  },
+  "search_suggestions.label.products": {
+    "defaultMessage": "Products"
+  },
   "selected_refinements.action.clear_all": {
     "defaultMessage": "Clear All"
   },
@@ -1157,7 +1172,7 @@
     "defaultMessage": "Return"
   },
   "storelocator.setasmystore": {
-    "defaultMessage": "Set as my Store"
+    "defaultMessage": "Shop this Store"
   },
   "storelocator.storedetails.loading": {
     "defaultMessage": "Loading Store..."

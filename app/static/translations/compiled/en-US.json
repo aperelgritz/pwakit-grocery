@@ -11,6 +11,12 @@
       "value": "Stores"
     }
   ],
+  "B/orA3": [
+    {
+      "type": 0,
+      "value": "Promotions"
+    }
+  ],
   "TCZ75v": [
     {
       "type": 0,
@@ -2499,6 +2505,30 @@
       "value": "Cancel"
     }
   ],
+  "search_suggestions.label.categories": [
+    {
+      "type": 0,
+      "value": "Categories"
+    }
+  ],
+  "search_suggestions.label.content": [
+    {
+      "type": 0,
+      "value": "Content"
+    }
+  ],
+  "search_suggestions.label.did-you-mean": [
+    {
+      "type": 0,
+      "value": "Did you mean"
+    }
+  ],
+  "search_suggestions.label.products": [
+    {
+      "type": 0,
+      "value": "Products"
+    }
+  ],
   "selected_refinements.action.clear_all": [
     {
       "type": 0,
@@ -2640,7 +2670,7 @@
   "storelocator.setasmystore": [
     {
       "type": 0,
-      "value": "Set as my Store"
+      "value": "Shop this Store"
     }
   ],
   "storelocator.storedetails.loading": [
