@@ -186,14 +186,14 @@ const HomeGrocery = () => {
                 </HStack>
             </Section>
 
-            <ContentCards title="Get the Best Deals" cards={cards} />
+            <ContentCards title="Everyday Essentials" cards={cards} />
 
             {productSearchResult && (
                 <Section
                     padding={4}
                     paddingTop={16}
                     title="Shop Products"
-                    subtitle="All you Essentials"
+                    subtitle="The best deals here"
                 >
                     <Stack pt={8} spacing={16}>
                         <ProductScroller

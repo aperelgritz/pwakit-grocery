@@ -6,12 +6,12 @@
  */
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Stack, Divider, Text} from '@salesforce/retail-react-app/app/components/shared/ui'
+import {Stack, Divider, Text, Box} from '@salesforce/retail-react-app/app/components/shared/ui'
 import RecentSearches from '@salesforce/retail-react-app/app/components/search/partials/recent-searches'
 import Suggestions from '@salesforce/retail-react-app/app/components/search/partials/suggestions'
 
 // Alexis custom
-import NewProductSuggestions from './new-product-suggestions'
+import ProductSuggestions from './product-suggestions'
 import {useIntl, FormattedMessage} from 'react-intl'
 
 const SearchSuggestions = ({recentSearches, searchSuggestions, closeAndNavigate}) => {
@@ -60,9 +60,9 @@ const SearchSuggestions = ({recentSearches, searchSuggestions, closeAndNavigate}
     */
 
     return (
-        <Stack padding={6} spacing={0}>
+        <Stack padding={6} spacing={0} divider={<Divider />}>
             {phraseSugg && (
-                <>
+                <Box>
                     <Text fontSize="lg" as="i">
                         <FormattedMessage
                             defaultMessage="Did you mean"
@@ -73,11 +73,10 @@ const SearchSuggestions = ({recentSearches, searchSuggestions, closeAndNavigate}
                         closeAndNavigate={closeAndNavigate}
                         suggestions={searchSuggestions?.phraseSuggestions}
                     />
-                    <Divider />
-                </>
+                </Box>
             )}
             {catSugg && (
-                <>
+                <Box>
                     <Text fontSize="lg" as="i">
                         <FormattedMessage
                             defaultMessage="Categories"
@@ -88,26 +87,24 @@ const SearchSuggestions = ({recentSearches, searchSuggestions, closeAndNavigate}
                         closeAndNavigate={closeAndNavigate}
                         suggestions={searchSuggestions?.categorySuggestions}
                     />
-                    <Divider />
-                </>
+                </Box>
             )}
             {prodSugg && (
-                <>
+                <Box>
                     <Text fontSize="lg" as="i">
                         <FormattedMessage
                             defaultMessage="Products"
                             id="search_suggestions.label.products"
                         />
                     </Text>
-                    <NewProductSuggestions
+                    <ProductSuggestions
                         closeAndNavigate={closeAndNavigate}
                         suggestions={searchSuggestions?.productSuggestions}
                     />
-                    <Divider />
-                </>
+                </Box>
             )}
             {contentSugg && (
-                <>
+                <Box>
                     <Text fontSize="lg" as="i">
                         <FormattedMessage
                             defaultMessage="Content"
@@ -118,7 +115,7 @@ const SearchSuggestions = ({recentSearches, searchSuggestions, closeAndNavigate}
                         closeAndNavigate={closeAndNavigate}
                         suggestions={searchSuggestions?.contentSuggestions}
                     />
-                </>
+                </Box>
             )}
         </Stack>
     )

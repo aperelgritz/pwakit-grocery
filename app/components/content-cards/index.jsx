@@ -25,10 +25,10 @@ const ContentCards = ({title, cards}) => {
                 wrap="wrap"
                 style={{marginTop: '20px'}}
             >
-                {cards.map((card) => (
-                    <RouterLink to={card.catRelPath}>
+                {cards.map((card, idx) => (
+                    <RouterLink to={card.catRelPath} key={idx}>
                         <Box
-                            key={hashCode(card.label)}
+                            //key={hashCode(card.label)}
                             minWidth="320px"
                             bg="white"
                             shadow="lg"
