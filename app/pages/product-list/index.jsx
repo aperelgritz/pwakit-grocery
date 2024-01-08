@@ -92,6 +92,9 @@ import {useWishList} from '@salesforce/retail-react-app/app/hooks/use-wish-list'
 import {isHydrated} from '@salesforce/retail-react-app/app/utils/utils'
 import {getAssetUrl} from '@salesforce/pwa-kit-react-sdk/ssr/universal/utils'
 
+// Alexis custom grocery - get store context
+import {useStore} from '../../hooks/use-store'
+
 // NOTE: You can ignore certain refinements on a template level by updating the below
 // list of ignored refinements.
 const REFINEMENT_DISALLOW_LIST = ['c_isNew']
@@ -125,6 +128,9 @@ const ProductList = (props) => {
 
     // Alexis custom - skeleton/placeholder for banner image
     const [bannerImgLoaded, setBannerImgLoaded] = useState(false)
+
+    // Alexis custom - selected store
+    const {store: storeContext} = useStore()
 
     const urlParams = new URLSearchParams(location.search)
     let searchQuery = urlParams.get('q')
@@ -570,6 +576,8 @@ const ProductList = (props) => {
                                                       }
                                                   }}
                                                   */
+                                                  // Alexis custom - query and pass store context once
+                                                  storeContext={storeContext}
                                                   onFavouriteToggle={(isFavourite) => {
                                                       const action = isFavourite
                                                           ? addItemToWishlist

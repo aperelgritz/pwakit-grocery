@@ -85,7 +85,7 @@ const ProductSuggestionItem = ({product, idx, closeAndNavigate}) => {
             // If the items were successfully added, set the return value to be used
             // by the add to cart modal.
             setIsBasketLoading(false)
-            return [{productId, price, quantity: +1}]
+            // return [{productId, price, quantity: +1}]
         } catch (error) {
             showError(error)
         }

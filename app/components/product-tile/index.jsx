@@ -35,12 +35,13 @@ import {
     Badge,
     Icon,
     Tooltip,
-    HStack
+    HStack,
+    Spacer
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 import DynamicImage from '@salesforce/retail-react-app/app/components/dynamic-image'
 
 // Hooks
-import {useIntl, FormattedMessage} from 'react-intl'
+import {useIntl, FormattedMessage, FormattedNumber} from 'react-intl'
 
 // Other
 import {productUrlBuilder} from '@salesforce/retail-react-app/app/utils/url'
@@ -88,6 +89,8 @@ const ProductTile = (props) => {
         isFavourite,
         onFavouriteToggle,
         dynamicImageProps,
+        // Alexis custom
+        storeContext,
         ...rest
     } = props
 
@@ -128,9 +131,10 @@ const ProductTile = (props) => {
     const [itemIdInBasket, setItemIdInBasket] = useState('')
     const [isBasketLoading, setIsBasketLoading] = useState(false)
 
-    // Alexis custom
+    // Alexis custom - create link to promo-refined search
     const navigate = useNavigation()
 
+    // Alexis custom - check basket to show quantity in tile
     useEffect(() => {
         const productInBasket = basket?.productItems?.find(
             (lineItem) => lineItem.productId === productId
@@ -141,18 +145,30 @@ const ProductTile = (props) => {
             setItemIdInBasket(productInBasket.itemId)
         }
     }, [basket])
-    // Alexis custom end
-
-    // Alexis custom - check for discounted price - salePrice may not be active
-    let onDiscount = price !== originalPrice
-    // If store selected, load only the store prices
-    //if (storeContext) onDiscount = false
 
     // Alexis custom grocery - check for product-class promo
     const productPromo = promotionPrice.find((promo) => promo.promoDetails.class === 'product')
 
     // Alexis custom grocery - check for order-class promo
     const orderPromo = promotionPrice.find((promo) => promo.promoDetails.class === 'order')
+
+    // Alexis custom - check for discounted price - salePrice may not be active
+    let onDiscount = price !== originalPrice
+
+    // Alexis custom - determine displayed price & strikethrough price
+    let priceDisplayed
+    // If store selected, load only the store prices
+    if (storeContext) {
+        onDiscount = false
+        priceDisplayed = price
+    }
+
+    if (!storeContext && +productPromo?.value > 0 && productPromo.value < price) {
+        onDiscount = true
+        priceDisplayed = productPromo.value
+    } else {
+        priceDisplayed = price
+    }
 
     // Alexis custom grocery - price per unit
     let pricePerUnit = price
@@ -288,7 +304,12 @@ const ProductTile = (props) => {
                         >
                             -
                         </Button>
-                        <Box width={8} textAlign="center" lineHeight="2em">
+                        <Box
+                            width={8}
+                            textAlign="center"
+                            lineHeight="2em"
+                            backgroundColor="rgba(255, 255, 255, 0.8)"
+                        >
                             {qtyInBasket}
                         </Box>
                         <Button size="sm" onClick={handleAddToCart} isLoading={isBasketLoading}>
@@ -430,12 +451,15 @@ const ProductTile = (props) => {
                                 </Tooltip>
                             )}
                         </VStack>
+                        <Box {...styles.cartButtonBlock} onClick={(e) => e.preventDefault()}>
+                            {cartButtonBlock()}
+                        </Box>
                     </Box>
                 </Link>
 
                 {/* Price */}
                 {/* Alexis custom grocery - adding HStack & cart button block */}
-                <HStack justify="space-between">
+                {/* <HStack justify="space-between">
                     <Text {...styles.price} data-testid="product-tile-price">
                         {hitType === 'set' &&
                             intl.formatMessage({
@@ -448,6 +472,28 @@ const ProductTile = (props) => {
                         })}
                     </Text>
                     {cartButtonBlock()}
+                </HStack> */}
+                <HStack justify="flex-start">
+                    <Text {...styles.price} display={'inline-block'}>
+                        <FormattedNumber
+                            style="currency"
+                            currency={currency || activeCurrency}
+                            value={priceDisplayed}
+                        />
+                    </Text>
+                    {onDiscount && (
+                        <Text
+                            {...styles.priceStrikethrough}
+                            display={'inline-block'}
+                            alignSelf="flex-end"
+                        >
+                            <FormattedNumber
+                                style="currency"
+                                currency={currency || activeCurrency}
+                                value={originalPrice}
+                            />
+                        </Text>
+                    )}
                 </HStack>
 
                 {/* Alexis custom - Product & Order Promo Callouts (only the 1st of each) */}

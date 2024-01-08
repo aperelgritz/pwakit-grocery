@@ -27,13 +27,11 @@ import Link from '@salesforce/retail-react-app/app/components/link'
 import {SkeletonCircle} from '@chakra-ui/react'
 
 // Project Components
-import Hero from '@salesforce/retail-react-app/app/components/hero'
 import Seo from '@salesforce/retail-react-app/app/components/seo'
 import Section from '@salesforce/retail-react-app/app/components/section'
 import ProductScroller from '@salesforce/retail-react-app/app/components/product-scroller'
 // Alexis custom
 import Carousel from '../../components/carousel/index'
-import ContentCard from '../../components/content-card/index'
 import ContentCards from '../../components/content-cards/index'
 
 // Others
@@ -55,6 +53,9 @@ import {
 import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hooks'
 import {useProductSearch, useCategory} from '@salesforce/commerce-sdk-react'
 
+// Alexis custom grocery - get store context
+import {useStore} from '../../hooks/use-store'
+
 /**
  * This is the home page for Retail React App.
  * The page is created for demonstration purposes.
@@ -71,10 +72,14 @@ const HomeGrocery = () => {
         res.set('Cache-Control', `max-age=${MAX_CACHE_AGE}`)
     }
 
-    // ALexis custom - get products on promo
+    // Alexis custom - selected store
+    const {store: storeContext} = useStore()
+
+    // Alexis custom - get products on promo
     const {data: productSearchResult, isLoading} = useProductSearch({
         parameters: {
-            refine: ['cgid=root', 'pmid=50pct-off-2nd|berries-3-for-2', 'htype=product'],
+            // refine: ['cgid=root', 'pmid=50pct-off-2nd|berries-3-for-2', 'htype=product'],
+            refine: ['cgid=root', 'pmid=icecream-20-percent-off', 'htype=product'],
             // refine: ['htype=product'],
             limit: 10
         }
@@ -199,6 +204,7 @@ const HomeGrocery = () => {
                         <ProductScroller
                             products={productSearchResult?.hits}
                             isLoading={isLoading}
+                            storeContext={storeContext}
                         />
                     </Stack>
                 </Section>

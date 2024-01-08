@@ -28,7 +28,9 @@ export default {
         // Alexis custom
         priceStrikethrough: {
             textDecoration: 'line-through',
-            fontSize: 'xl'
+            fontSize: 'lg',
+            color: 'gray.500',
+            fontWeight: 300
         },
         // Alexis custom
         pricePerUnit: {
@@ -53,6 +55,13 @@ export default {
             variant: 'unstyled',
             top: 2,
             left: 1
+        },
+        // Alexis custom
+        cartButtonBlock: {
+            position: 'absolute',
+            variant: 'unstyled',
+            bottom: 2,
+            right: 1
         }
     }),
     parts: ['container', 'imageWrapper', 'image', 'price', 'title', 'rating', 'variations', 'brand']

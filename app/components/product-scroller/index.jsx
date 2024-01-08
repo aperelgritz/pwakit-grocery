@@ -38,6 +38,7 @@ const ProductScroller = forwardRef(
                 xl: 'calc(20% - 10px)'
             },
             productTileProps,
+            storeContext,
             ...props
         },
         ref
@@ -115,6 +116,8 @@ const ProductScroller = forwardRef(
                                             dynamicImageProps={{
                                                 widths: ['70vw', '70vw', '40vw', '30vw']
                                             }}
+                                            // Alexis custom
+                                            storeContext={storeContext}
                                         />
                                     )}
                                 </Box>
