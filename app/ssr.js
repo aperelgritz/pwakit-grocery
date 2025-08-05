@@ -62,11 +62,11 @@ const {handler} = runtime.createHandler(options, (app) => {
                         // Alexis custom grocery
                         // added "https://maps.googleapis.com" for Store Locator
                         // added 'https://account.demandware.com' for Timeslot Manager
-                        // added 'https://gsk-timeslot.herokuapp.com' for Timeslot Manager
+                        // added 'https://gsk-timeslot-ad531582b38d.herokuapp.com' for Timeslot Manager
                         // added 'https://gsk-cors-anywhere-28a5ac32d250.herokuapp.com' for Timeslot Manager
                         'https://maps.googleapis.com',
                         'https://account.demandware.com',
-                        'https://gsk-timeslot.herokuapp.com',
+                        'https://gsk-timeslot-ad531582b38d.herokuapp.com',
                         'https://gsk-cors-anywhere-28a5ac32d250.herokuapp.com'
                     ]
                 }
